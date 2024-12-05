@@ -6,9 +6,9 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/..')
 
-from aoc import get_contents
+from aoc import get_lines
 
-content = '\n'.join(get_contents('input'))
+content = '\n'.join(get_lines('input'))
 
 comp = re.compile(r'mul\((\d+),(\d+)\)')
 groups = comp.findall(content)

@@ -1,4 +1,10 @@
-def get_contents(filename):
+def get_content(filename):
+    with open(filename, 'r') as f:
+        content = f.read()
+
+    return content
+
+def get_lines(filename):
     with open(filename, 'r') as f:
         content = f.readlines()
 
@@ -19,7 +25,7 @@ def get_columns(content, sep = ' ', to_int = True):
 
 
 def get_columns_from_file(filename, sep = ' ', to_int = True):
-    content = get_contents(filename)
+    content = get_lines(filename)
     return get_columns(content, sep, to_int)
 
 
@@ -35,5 +41,5 @@ def get_line_arrays(content, sep = ' ', to_int = True):
 
 
 def get_line_arrays_from_file(filename, sep = ' ', to_int = True):
-    content = get_contents(filename)
+    content = get_lines(filename)
     return get_line_arrays(content, sep, to_int)

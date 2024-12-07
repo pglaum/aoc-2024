@@ -41,11 +41,11 @@ def get_next():
 
     pos = new_pos
 
-    visited.append([pos, directions[direction_idx]])
+    visited.append([pos, direction_idx])
     return 0
 
 pos = get_starter()
-visited.append([pos, directions[direction_idx]])
+visited.append([pos, direction_idx])
 
 while True:
     res = get_next()
@@ -82,35 +82,42 @@ def get_next_with_loop(the_map):
     return 0
 
 
-old_visited = [x[0] for x in visited]
+old_visited = visited.copy()
+searched = []
 obstacles = []
-for i in range(len(content)):
-    for j in range(len(content[i])):
-        if content[i][j] == '#':
-            continue
+the_map = content.copy()
+for idx, v in enumerate(old_visited):
+    if v[0] in searched:
+        continue
 
-        if [i, j] not in old_visited:
-            continue
+    searched.append(v[0])
 
-        obstacle = [i, j]
+    i, j = v[0]
+    if content[i][j] == '#':
+        continue
 
+    obstacle = [i, j]
+
+    if idx > 0:
+        pos = old_visited[idx - 1][0]
+        direction_idx = old_visited[idx - 1][1]
+    else:
         pos = get_starter()
         if pos == [i, j]:
             continue
         direction_idx = 0
-        visited = []
-        visited.append([pos, direction_idx])
+    visited = []
+    visited.append([pos, direction_idx])
 
-        the_map = content.copy()
-        the_map[i] = the_map[i][:j] + '#' + the_map[i][j + 1:]
-        while True:
-            res = get_next_with_loop(the_map)
-            if res == -1:
-                print('obstacle not found:', obstacle)
-                break
-            if res == -2:
-                obstacles.append(obstacle)
-                print('obstacle found:', obstacle)
-                break
+    the_map[i] = the_map[i][:j] + '#' + the_map[i][j + 1:]
+    while True:
+        res = get_next_with_loop(the_map)
+        if res == -1:
+            break
+        if res == -2:
+            obstacles.append(obstacle)
+            print('obstacle found:', obstacle, 'at', idx, 'of', len(old_visited))
+            break
+    the_map[i] = the_map[i][:j] + '.' + the_map[i][j + 1:]
 
 print('part2:', len(obstacles))
